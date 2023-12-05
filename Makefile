@@ -7,27 +7,25 @@ LIBFTNAME = libft.a
 LIBFTDIR = ./libft
 NAME = libftprintf.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
 all: $(NAME)
 
-$(NAME): makelibft $(OBJS)
-	make -C libft
-	cp libft/libft.a $(NAME)
+$(NAME): libft/libft.a $(OBJS)
+	cp $(LIBFTDIR)/$(LIBFTNAME) $(NAME)
 	ar rcs $(NAME) $(OBJS)
 
-makelibft:
-	make -C $(LIBFTDIR) bonus
-	cp $(LIBFTDIR)/$(LIBFTNAME) $(LIBFTNAME) 
+libft/libft.a:
+	make -C $(LIBFTDIR)
 
 clean:
 	$(RM) $(OBJS) a.out
-	cd $(LIBFTDIR) && make clean
+	make -C $(LIBFTDIR) clean
 
 fclean: clean 
 	$(RM) $(NAME) $(LIBFTNAME)
-	cd $(LIBFTDIR) && make clean
+	make -C $(LIBFTDIR) fclean
 
 re : fclean all
 

@@ -6,7 +6,7 @@
 /*   By: amalgonn <amalgonn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 11:49:11 by amalgonn          #+#    #+#             */
-/*   Updated: 2023/11/28 16:43:39 by amalgonn         ###   ########.fr       */
+/*   Updated: 2023/12/01 09:06:44 by amalgonn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ static int	check_type(const char *input, va_list arg)
 		i += print_char(va_arg(arg, int));
 	else if (*input == 's')
 		i += print_string(va_arg(arg, char *));
-	// else if (*input == 'p')
-	// 	i += print_ptr(va_arg(arg, unsigned long));
 	else if (*input == 'd' || *input == 'i')
 		i += print_num(va_arg(arg, int));
-	else if (*input == 'u')
-		i += ft_putnbr_base(va_arg(arg, unsigned int), "0123456789");
+	else if (*input == 'u' )
+		i += putnbr_base(va_arg(arg, unsigned int), "0123456789");
 	else if (*input == 'x')
-		i += ft_putnbr_base(va_arg(arg, unsigned int), "0123456789abcdef");
+		i += putnbr_base(va_arg(arg, unsigned int), "0123456789abcdef");
 	else if (*input == 'X')
-		i += ft_putnbr_base(va_arg(arg, unsigned int), "0123456789ABCDEF");
+		i += putnbr_base(va_arg(arg, unsigned int), "0123456789ABCDEF");
+	else if (*input == 'p')
+		i += print_ptr(va_arg(arg, unsigned long), "0123456789abcdef");
 	return (i);
 }
 
@@ -40,6 +40,8 @@ int	ft_printf(const char *input, ...)
 	int		i;
 
 	i = 0;
+	if (!input)
+		return (-1);
 	va_start (args, input);
 	while (*input)
 	{
@@ -47,15 +49,14 @@ int	ft_printf(const char *input, ...)
 		{
 			input++;
 			if (ft_strchr("cspdiuxX", *input))
-			i += check_type(input, args);
+				i += check_type(input, args);
 			else if (*input == '%')
-			i += print_char('%');
+				i += print_char('%');
 		}
 		else
-		i += print_char(*input);
+			i += print_char(*input);
 		input++;
 	}
 	va_end(args);
 	return (i);
 }
-
